@@ -27,7 +27,7 @@ The 2 input fields are required.
 "C:\XXX\gui_pack.py"
 ```
 
-`-s` (or `--scripts`) indicates the folder were the `build_pack.py` and 
+`-s` (or `--scripts-folder`) indicates the folder were the `build_pack.py` and 
 `parse_pack.py` scripts are located.
 
 Depending on your python installation, you may need to begin your

@@ -4,6 +4,8 @@
 Graphical User Iterface for build_pack and parse_pack scripts.
 """
 
+import argparse
+
 from tkinter import *
 from tkinter import ttk
 
@@ -13,11 +15,16 @@ from parseframe import *
 from menubar import *
 from textmessage import *
 from autoresized_notebook import Autoresized_Notebook
+from pathlib import Path
 
 
 __author__ = "aleyr"
 __date__ = "2018/08/03"
 __version__ = "$Revision: 0.8"
+
+
+BUILD_SCRIPT_NAME = "build_pack.py"
+PARSE_SCRIPT_NAME = "parse_pack.py"
 
 
 # *********************************************************************#
@@ -28,12 +35,13 @@ __version__ = "$Revision: 0.8"
 
 
 class App(Tk):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, build_file, parse_file, *args, **kwargs):
         # call the parent constructor
         Tk.__init__(self, *args, **kwargs)
 
+        self.build_file = build_file
+        self.parse_file = parse_file
         self.text_label = StringVar()
-        # self.text_label.set("123456790")
 
         tab_control = Autoresized_Notebook(self)
 
@@ -69,12 +77,31 @@ class App(Tk):
 # *********************************************************************#
 
 
-def validate_pack_scripts():
-    pass
+def is_pack_scripts_folder(scripts_folder):
+    out = False
+    if args.scripts_folder:
+        folder = Path(scripts_folder)
+
+        if folder.exists() and folder.is_dir():
+            build_file = folder / BUILD_SCRIPT_NAME
+            parse_file = folder / PARSE_SCRIPT_NAME
+
+            if build_file.exists() and parse_file.exists():
+                out = True
+
+    return out
 
 
-def main():
-    app = App()
+def get_pack_scripts_paths(scripts_folder):
+    folder = Path(scripts_folder)
+    build_file = folder / BUILD_SCRIPT_NAME
+    parse_file = folder / PARSE_SCRIPT_NAME
+
+    return (build_file, parse_file)
+
+
+def main(build_file, parse_file):
+    app = App(build_file, parse_file)
     app.title("EverDrive-Packs-Lists-Database")
     app.mainloop()
 
@@ -87,4 +114,22 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    """
+    Parse arguments from command line.
+    """
+    parser = argparse.ArgumentParser(
+        description="use a database to identify and organize files.")
+
+    parser.add_argument("-s", "--scripts_folder",
+                        dest="scripts_folder",
+                        default=None,
+                        help="set scripts folder")
+
+    args = parser.parse_args()
+
+    build_file = None
+    parse_file = None
+    if is_pack_scripts_folder(args.scripts_folder):
+        build_file, parse_file = get_pack_scripts_paths(args)
+
+    main(build_file, parse_file)

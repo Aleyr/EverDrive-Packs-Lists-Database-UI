@@ -122,3 +122,7 @@ def iter_except(function, exception):
             yield function()
     except exception:
         return
+
+
+def click_set_paths(parent, script_path):
+    pass

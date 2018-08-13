@@ -7,6 +7,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 
 import tkinter as tk
 from tkinter import *
+from textmessage import TextMessage
 
 
 __author__ = "aleyr"
@@ -23,11 +24,14 @@ class MenuBar(tk.Menu):
         file_menu = tk.Menu(self, tearoff=0)
         help_menu = tk.Menu(self, tearoff=0)
 
+        file_menu.add_command(label="Set Pack Scripts Path",
+                              command=self.parent.destroy)
+        file_menu.add_separator()
         file_menu.add_command(label="Exit",
                               command=self.parent.destroy)
         self.add_cascade(label="File", menu=file_menu)
 
         help_menu.add_command(label="About",
                               command=lambda:
-                              TextMessage().about())
+                              TextMessage(parent).set_script_paths())
         self.add_cascade(label="Help", menu=help_menu)
