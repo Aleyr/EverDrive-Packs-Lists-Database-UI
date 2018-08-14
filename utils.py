@@ -69,10 +69,10 @@ def create_command(folder=None, output=None, input_folder=None,
     return cmd
 
 
-def get_abs_path(path, add_quotes=False):
+def get_abs_path(path, add_quotes=False, quote="\""):
     out = os.path.abspath(str(path))
     if add_quotes:
-        out = "\"" + out + "\""
+        out = quote + out + quote
 
     return out
 

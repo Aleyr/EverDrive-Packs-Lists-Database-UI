@@ -35,10 +35,11 @@ PARSE_SCRIPT_NAME = "parse_pack.py"
 
 
 class App(Tk):
-    def __init__(self, build_file, parse_file, *args, **kwargs):
+    def __init__(self, folder, build_file, parse_file, *args, **kwargs):
         # call the parent constructor
         Tk.__init__(self, *args, **kwargs)
 
+        self.folder = folder
         self.build_file = build_file
         self.parse_file = parse_file
         self.text_label = StringVar()
@@ -97,11 +98,11 @@ def get_pack_scripts_paths(scripts_folder):
     build_file = folder / BUILD_SCRIPT_NAME
     parse_file = folder / PARSE_SCRIPT_NAME
 
-    return (build_file, parse_file)
+    return (folder, build_file, parse_file)
 
 
-def main(build_file, parse_file):
-    app = App(build_file, parse_file)
+def main(folder, build_file, parse_file):
+    app = App(folder, build_file, parse_file)
     app.title("EverDrive-Packs-Lists-Database")
     app.mainloop()
 
@@ -127,9 +128,10 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
+    folder = None
     build_file = None
     parse_file = None
     if is_pack_scripts_folder(args.scripts_folder):
-        build_file, parse_file = get_pack_scripts_paths(args)
+        folder, build_file, parse_file = get_pack_scripts_paths(args)
 
-    main(build_file, parse_file)
+    main(folder, build_file, parse_file)

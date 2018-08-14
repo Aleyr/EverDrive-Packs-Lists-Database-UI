@@ -59,18 +59,18 @@ class ParseFrame(ttk.Frame):
                    ).grid(column=3, row=2, sticky=W)
 
         button_frame = ttk.Frame(self)
-        self.clear_btn = ttk.Button(button_frame, text="Clear", underline=0,
-                                    command=lambda: self.click_clear())
-        self.clear_btn.grid(column=1, row=1, sticky=E)
-        self.parent.bind("<Alt_L><c>", lambda e: self.click_clear())
+        self.parse_btn = ttk.Button(button_frame, text="Parse", underline=0,
+                                    command=lambda: self.click_parse())
+        self.parse_btn.grid(column=1, row=1, sticky=W)
+        self.parent.bind("<Alt_L><p>", lambda e: self.click_parse())
         self.cmd_btn = ttk.Button(button_frame, text="Command", underline=2,
                                   command=lambda: self.click_command())
         self.cmd_btn.grid(column=2, row=1, sticky=E)
         self.parent.bind("<Alt_L><m>", lambda e: self.click_command())
-        self.parse_btn = ttk.Button(button_frame, text="Parse", underline=0,
-                                    command=lambda: self.click_parse())
-        self.parse_btn.grid(column=3, row=1, sticky=W)
-        self.parent.bind("<Alt_L><p>", lambda e: self.click_parse())
+        self.clear_btn = ttk.Button(button_frame, text="Clear", underline=0,
+                                    command=lambda: self.click_clear())
+        self.clear_btn.grid(column=3, row=1, sticky=E)
+        self.parent.bind("<Alt_L><c>", lambda e: self.click_clear())
         button_frame.grid(column=2, row=8, columnspan=3, sticky=E)
 
         textbox_roms.focus_set()

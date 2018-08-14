@@ -98,18 +98,18 @@ class BuildFrame(ttk.Frame):
         self.overwrite.set(0)
 
         button_frame = ttk.Frame(self)
-        self.clear_btn = ttk.Button(button_frame, text="Clear", underline=0,
-                                    command=lambda: self.click_clear())
-        self.clear_btn.grid(column=1, row=1, sticky=E)
-        self.parent.bind("<Alt_L><c>", lambda e: self.click_clear())
+        self.build_btn = ttk.Button(button_frame, text="Build", underline=0,
+                                    command=lambda: self.click_build())
+        self.build_btn.grid(column=1, row=1, sticky=W)
+        self.parent.bind("<Alt_L><b>", lambda e: self.click_build())
         self.cmd_btn = ttk.Button(button_frame, text="Command", underline=2,
                                   command=lambda: self.click_command())
         self.cmd_btn.grid(column=2, row=1, sticky=E)
         self.parent.bind("<Alt_L><m>", lambda e: self.click_command())
-        self.build_btn = ttk.Button(button_frame, text="Build", underline=0,
-                                    command=lambda: self.click_build())
-        self.build_btn.grid(column=3, row=1, sticky=W)
-        self.parent.bind("<Alt_L><b>", lambda e: self.click_build())
+        self.clear_btn = ttk.Button(button_frame, text="Clear", underline=0,
+                                    command=lambda: self.click_clear())
+        self.clear_btn.grid(column=3, row=1, sticky=E)
+        self.parent.bind("<Alt_L><c>", lambda e: self.click_clear())
         button_frame.grid(column=2, row=8, columnspan=3, sticky=E)
 
         textbox_roms.focus_set()

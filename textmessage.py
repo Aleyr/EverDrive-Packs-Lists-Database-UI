@@ -67,6 +67,10 @@ class TextMessage(object):
         top.lift()
 
         self.path_dir_roms = StringVar()
+        if self.parent.folder:
+            self.path_dir_roms = get_abs_path(self.parent.folder)
+        else:
+            self.path_dir_roms = ""
 
         textbox_roms = Entry(top, width=50, textvariable=self.path_dir_roms)
         textbox_roms.grid(column=2, row=1, sticky=E)
@@ -94,7 +98,7 @@ class TextMessage(object):
         top.bind('<Return>', lambda e: top.destroy())
         top.bind('<Escape>', lambda e: self.cancel)
 
-        top.protocol("WM_DELETE_WINDOW", self.cancel)
+        # top.protocol("WM_DELETE_WINDOW", self.cancel)
         top.initial_focus.focus_set()
         top.wait_window(top)
 
