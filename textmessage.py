@@ -61,47 +61,6 @@ class TextMessage(object):
         top.bind("<Alt_L><o>", lambda e: top.destroy())
         top.bind('<Escape>', lambda e: top.destroy())
 
-    def set_script_paths(self):
-        top = tk.Toplevel()
-        top.title("Set Pack Scripts Folder")
-        top.lift()
-
-        self.path_dir_roms = StringVar()
-        if self.parent.folder:
-            self.path_dir_roms = get_abs_path(self.parent.folder)
-        else:
-            self.path_dir_roms = ""
-
-        textbox_roms = Entry(top, width=50, textvariable=self.path_dir_roms)
-        textbox_roms.grid(column=2, row=1, sticky=E)
-        ttk.Label(top, text="ROMs folder: "
-                  ).grid(column=1, row=1, sticky=W)
-        browse_btn = ttk.Button(top, text="Browse", underline=0,
-                                command=lambda:
-                                select_folder(self.path_dir_roms,
-                                              "Select Pack Scripts folder"))
-        browse_btn.grid(column=3, row=1, sticky=W)
-
-        button_frame = ttk.Frame(top)
-        parse_btn = ttk.Button(button_frame, text="Set Path", underline=0,
-                               command=lambda: click_set_paths())
-        parse_btn.grid(column=3, row=1, sticky=W)
-        top.bind("<Alt_L><b>",
-                 lambda e: select_folder(self.path_dir_roms,
-                                         "Select Pack Scripts folder"))
-        top.bind("<Alt_L><s>", lambda e: click_set_paths())
-        button_frame.grid(column=2, row=8, columnspan=3, sticky=E)
-
-        top.resizable(width=tk.FALSE, height=tk.FALSE)
-
-        browse_btn.focus_set()
-        top.bind('<Return>', lambda e: top.destroy())
-        top.bind('<Escape>', lambda e: self.cancel)
-
-        # top.protocol("WM_DELETE_WINDOW", self.cancel)
-        top.initial_focus.focus_set()
-        top.wait_window(top)
-
     def about(self):
         top = tk.Toplevel()
         top.title("About")
@@ -131,9 +90,3 @@ class TextMessage(object):
         button.focus_set()
         top.bind('<Alt_L><o>', lambda e: top.destroy())
         top.bind('<Escape>', lambda e: top.destroy())
-
-    def cancel(self, event=None):
-
-        # put focus back to the parent window
-        self.parent.focus_set()
-        self.destroy()

@@ -5,6 +5,8 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 """
 
 import argparse
+import configparser
+import os
 
 from tkinter import *
 from tkinter import ttk
@@ -16,15 +18,12 @@ from menubar import *
 from textmessage import *
 from autoresized_notebook import Autoresized_Notebook
 from pathlib import Path
+from dialog import Dialog
 
 
 __author__ = "aleyr"
 __date__ = "2018/08/03"
 __version__ = "$Revision: 0.8"
-
-
-BUILD_SCRIPT_NAME = "build_pack.py"
-PARSE_SCRIPT_NAME = "parse_pack.py"
 
 
 # *********************************************************************#
@@ -78,32 +77,11 @@ class App(Tk):
 # *********************************************************************#
 
 
-def is_pack_scripts_folder(scripts_folder):
-    out = False
-    if args.scripts_folder:
-        folder = Path(scripts_folder)
-
-        if folder.exists() and folder.is_dir():
-            build_file = folder / BUILD_SCRIPT_NAME
-            parse_file = folder / PARSE_SCRIPT_NAME
-
-            if build_file.exists() and parse_file.exists():
-                out = True
-
-    return out
-
-
-def get_pack_scripts_paths(scripts_folder):
-    folder = Path(scripts_folder)
-    build_file = folder / BUILD_SCRIPT_NAME
-    parse_file = folder / PARSE_SCRIPT_NAME
-
-    return (folder, build_file, parse_file)
-
-
 def main(folder, build_file, parse_file):
     app = App(folder, build_file, parse_file)
     app.title("EverDrive-Packs-Lists-Database")
+    if not app.folder:
+        Dialog(app, "Set Pack Scripts Folder")
     app.mainloop()
 
 
@@ -131,7 +109,18 @@ if __name__ == '__main__':
     folder = None
     build_file = None
     parse_file = None
+    ini_file = get_ini_file()
+
     if is_pack_scripts_folder(args.scripts_folder):
-        folder, build_file, parse_file = get_pack_scripts_paths(args)
+        folder = Path(args.scripts_folder)
+        save_ini_file(ini_file, "UI", {"scripts_folder": get_abs_path(folder)})
+
+    elif ini_file.exists():
+        config = configparser.ConfigParser()
+        config.read_file(ini_file.open())
+        folder = Path(config["UI"]["scripts_folder"])
+
+    if folder:
+        build_file, parse_file = get_pack_scripts_paths(folder)
 
     main(folder, build_file, parse_file)

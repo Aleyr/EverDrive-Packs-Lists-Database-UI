@@ -93,9 +93,12 @@ class Dialog(Toplevel):
         self.cancel()
 
     def cancel(self, event=None):
-        # put focus back to the parent window
-        self.parent.focus_set()
-        self.destroy()
+        if len(self.scripts_folder.get()) > 0:
+            # put focus back to the parent window
+            self.parent.focus_set()
+            self.destroy()
+        else:
+            self.parent.destroy()
 
     #
     # command hooks
@@ -113,4 +116,11 @@ class Dialog(Toplevel):
         return out
 
     def apply(self):
-        pass  # override
+        folder = Path(self.scripts_folder.get())
+        build_file, parse_file = get_pack_scripts_paths(folder)
+        self.parent.folder = folder
+        self.parent.build_file = build_file
+        self.parent.parse_file = parse_file
+
+        save_ini_file(get_ini_file(), "UI",
+                      {"scripts_folder": get_abs_path(folder)})

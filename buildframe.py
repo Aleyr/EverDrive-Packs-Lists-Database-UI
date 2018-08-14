@@ -136,7 +136,8 @@ class BuildFrame(ttk.Frame):
 
     def click_command(self):
         if self.validate_info():
-            cmd = create_command(input_folder=self.path_dir_roms.get(),
+            cmd = create_command(build_file=self.parent.build_file,
+                                 input_folder=self.path_dir_roms.get(),
                                  database=self.path_pack_file.get(),
                                  output_folder=self.path_dir_pack.get(),
                                  missing=self.path_missing_file.get(),
@@ -169,7 +170,8 @@ class BuildFrame(ttk.Frame):
     def click_build(self):
         if self.validate_info():
             self.disable_components()
-            cmd = create_command_array(input_folder=self.path_dir_roms.get(),
+            cmd = create_command_array(build_file=self.parent.build_file,
+                                       input_folder=self.path_dir_roms.get(),
                                        database=self.path_pack_file.get(),
                                        output_folder=self.path_dir_pack.get(),
                                        missing=self.path_missing_file.get(),
@@ -200,7 +202,7 @@ class BuildFrame(ttk.Frame):
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 # print("Work is done!!!!")
-                self.quit()
+                self.finish()
                 return
             else:
                 # print("line " + str(line) + ", line[:1] " + str(line[:1]))
@@ -213,10 +215,9 @@ class BuildFrame(ttk.Frame):
                 break  # display no more than one line per 40 milliseconds
         self.parent.after(40, self.update, q)  # schedule next update
 
-    def quit(self):
+    def finish(self):
         self.parent.text_label.set("Build completed.")
         self.parent.progress["mode"] = "determinate"
         self.parent.progress["value"] = 0
         self.process.kill()  # exit subprocess if GUI is closed (zombie!)
         self.enable_components()
-        # self.parent.destroy()

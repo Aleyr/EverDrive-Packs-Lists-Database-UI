@@ -93,7 +93,8 @@ class ParseFrame(ttk.Frame):
 
     def click_command(self):
         if self.validate_info():
-            cmd = create_command(folder=self.path_dir_roms.get(),
+            cmd = create_command(parse_file=self.parent.parse_file,
+                                 folder=self.path_dir_roms.get(),
                                  output=self.path_pack_file.get())
             TextMessage().popup("Python command", cmd)
 
@@ -119,7 +120,8 @@ class ParseFrame(ttk.Frame):
     def click_parse(self):
         if self.validate_info():
             self.disable_components()
-            cmd = create_command_array(folder=self.path_dir_roms.get(),
+            cmd = create_command_array(parse_file=self.parent.parse_file,
+                                       folder=self.path_dir_roms.get(),
                                        output=self.path_pack_file.get())
             # print("cmd ", cmd)
             self.process = Popen(cmd, stdout=PIPE)
@@ -146,7 +148,7 @@ class ParseFrame(ttk.Frame):
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 # print("Work is done!!!!")
-                self.quit()
+                self.finish()
                 return
             else:
                 # print("line " + str(line))
@@ -155,10 +157,9 @@ class ParseFrame(ttk.Frame):
                 break  # display no more than one line per 40 milliseconds
         self.parent.after(40, self.update, q)  # schedule next update
 
-    def quit(self):
+    def finish(self):
         self.parent.text_label.set("Parse completed.")
         self.parent.progress["mode"] = "determinate"
         self.parent.progress["value"] = 0
         self.process.kill()  # exit subprocess if GUI is closed (zombie!)
         self.enable_components()
-        # self.parent.destroy()
