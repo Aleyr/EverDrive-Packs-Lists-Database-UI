@@ -5,15 +5,21 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 """
 
 
+import configparser
+import os
+
 from tkinter import *
 from tkinter import filedialog as fd
-import os
 from pathlib import Path
 
 
 __author__ = "aleyr"
 __date__ = "2018/08/09"
-__version__ = "$Revision: 0.8"
+__version__ = "$Revision: 0.9"
+
+
+BUILD_SCRIPT_NAME = "build_pack.py"
+PARSE_SCRIPT_NAME = "parse_pack.py"
 
 
 def select_folder(directory, title):
@@ -34,27 +40,13 @@ def select_file_save(filename, title):
         filename.set(path)
 
 
-def create_command(folder=None, output=None, input_folder=None,
+def create_command(build_file=None, parse_file=None,
+                   folder=None, output=None, input_folder=None,
                    database=None, output_folder=None, missing=None,
                    file_strategy=None, skip_eisting=None):
-    # cmd = sys.executable
-    # if folder:
-    #     cmd += " " + os.path.join(os.getcwd(), "parse_pack.py")
-    #     cmd += " -f \"" + folder + "\""
-    #     cmd += " -o \"" + output + "\""
-    # else:
-    #     cmd += " " + os.path.join(os.getcwd(), "build_pack.py")
-    #     cmd += " -i \"" + input_folder + "\""
-    #     cmd += " -d " + database
-    #     cmd += (" -o \"" + output_folder + "\"") if output_folder else ""
-    #     cmd += (" -m \"" + missing + "\"") if missing else ""
-    #     if file_strategy == 0:
-    #         cmd += " --file_strategy copy"
-    #     else:
-    #         cmd += " --file_strategy hardlink"
-    #     cmd += " --skip_existing" if skip_eisting else ""
-
-    arr = create_command_array(folder=folder,
+    arr = create_command_array(build_file=build_file,
+                               parse_file=parse_file,
+                               folder=folder,
                                output=output,
                                input_folder=input_folder,
                                database=database,
@@ -69,29 +61,71 @@ def create_command(folder=None, output=None, input_folder=None,
     return cmd
 
 
-def get_abs_path(path, add_quotes=False):
-    out = os.path.abspath(str(path))
-    if add_quotes:
-        out = "\"" + out + "\""
+def get_ini_file():
+    tmp = os.path.basename(__file__)[:-8] + "gui_pack.ini"
+    out = Path() / tmp
+    return out
+
+
+def save_ini_file(ini_file, section, values):
+    config = configparser.ConfigParser()
+    config[section] = values
+    with ini_file.open(mode="w") as configfile:
+        config.write(configfile)
+
+
+def is_pack_scripts_folder(scripts_folder):
+    out = False
+    if scripts_folder:
+        folder = Path(scripts_folder)
+
+        out = _is_pack_scripts_folder(folder)
 
     return out
 
 
-def create_command_array(folder=None, output=None, input_folder=None,
+def _is_pack_scripts_folder(folder):
+    out = False
+    if folder.exists() and folder.is_dir():
+        build_file = folder / BUILD_SCRIPT_NAME
+        parse_file = folder / PARSE_SCRIPT_NAME
+
+        if build_file.exists() and parse_file.exists():
+            out = True
+
+    return out
+
+
+def get_pack_scripts_paths(folder):
+    build_file = folder / BUILD_SCRIPT_NAME
+    parse_file = folder / PARSE_SCRIPT_NAME
+
+    return (build_file, parse_file)
+
+
+def get_abs_path(path, add_quotes=False, quote="\""):
+    out = os.path.abspath(str(path))
+    if add_quotes:
+        out = quote + out + quote
+
+    return out
+
+
+def create_command_array(build_file=None, parse_file=None,
+                         folder=None, output=None, input_folder=None,
                          database=None, output_folder=None, missing=None,
                          file_strategy=None, skip_eisting=None, new_line=True,
                          add_quotes=False):
     python_path = Path(sys.executable)
-    current_dir = Path(os.getcwd())
     cmd = [get_abs_path(python_path, add_quotes)]
-    if folder:
-        cmd.append(get_abs_path(current_dir / "parse_pack.py", add_quotes))
+    if parse_file:
+        cmd.append(get_abs_path(parse_file, add_quotes))
         cmd.append("-f")
         cmd.append(get_abs_path(Path(folder), add_quotes))
         cmd.append("-o")
         cmd.append(get_abs_path(Path(output), add_quotes))
     else:
-        cmd.append(get_abs_path(current_dir / "build_pack.py", add_quotes))
+        cmd.append(get_abs_path(build_file, add_quotes))
         cmd.append("-i")
         cmd.append(get_abs_path(Path(input_folder), add_quotes))
         cmd.append("-d")
@@ -122,3 +156,7 @@ def iter_except(function, exception):
             yield function()
     except exception:
         return
+
+
+def click_set_paths(parent, script_path):
+    pass

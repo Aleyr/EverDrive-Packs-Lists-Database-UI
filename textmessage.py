@@ -8,16 +8,18 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 import tkinter as tk
 from tkinter import *
 from platform import system
+from utils import *
 
 
 __author__ = "aleyr"
 __date__ = "2018/08/09"
-__version__ = "$Revision: 0.8"
+__version__ = "$Revision: 0.9"
 
 
 class TextMessage(object):
 
-    def __init__(self):
+    def __init__(self, parent=None):
+        self.parent = parent
         # Fonts
         if "Darwin" in system():
             #    print("\nOS X detected")
@@ -33,11 +35,11 @@ class TextMessage(object):
             self.res_size = -2
 
         self.fontz = {
-             "bold": ("TkDefaultFont", self.fontsize, "bold"),
-             "normal_small": ("TkDefaultFont",
-                              self.fontsize + self.but_size, "normal"),
-             "italic_small": ("TkDefaultFont",
-                              self.fontsize + self.but_size, "italic")}
+            "bold": ("TkDefaultFont", self.fontsize, "bold"),
+            "normal_small": ("TkDefaultFont",
+                             self.fontsize + self.but_size, "normal"),
+            "italic_small": ("TkDefaultFont",
+                             self.fontsize + self.but_size, "italic")}
 
     def popup(self, title, message, size=10):
         top = tk.Toplevel()
