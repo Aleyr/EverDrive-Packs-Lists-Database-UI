@@ -12,7 +12,7 @@ from dialog import Dialog
 
 __author__ = "aleyr"
 __date__ = "2018/08/09"
-__version__ = "$Revision: 0.8"
+__version__ = "$Revision: 0.9"
 
 
 class MenuBar(tk.Menu):
