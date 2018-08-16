@@ -79,12 +79,19 @@ def is_pack_scripts_folder(scripts_folder):
     if scripts_folder:
         folder = Path(scripts_folder)
 
-        if folder.exists() and folder.is_dir():
-            build_file = folder / BUILD_SCRIPT_NAME
-            parse_file = folder / PARSE_SCRIPT_NAME
+        out = _is_pack_scripts_folder(folder)
 
-            if build_file.exists() and parse_file.exists():
-                out = True
+    return out
+
+
+def _is_pack_scripts_folder(folder):
+    out = False
+    if folder.exists() and folder.is_dir():
+        build_file = folder / BUILD_SCRIPT_NAME
+        parse_file = folder / PARSE_SCRIPT_NAME
+
+        if build_file.exists() and parse_file.exists():
+            out = True
 
     return out
 

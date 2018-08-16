@@ -6,12 +6,12 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 
 import argparse
 import configparser
-import os
 
 from tkinter import *
 from tkinter import ttk
 
 from utils import *
+from utils import _is_pack_scripts_folder
 from buildframe import *
 from parseframe import *
 from menubar import *
@@ -45,13 +45,13 @@ class App(Tk):
 
         tab_control = Autoresized_Notebook(self)
 
-        build_frame = BuildFrame(self, padding="3 3 12 12")
-        build_frame.pack(side="top", fill="both", expand=True)
-        tab_control.add(build_frame, text="Build Pack", sticky=N)
+        self.build_frame = BuildFrame(self, padding="3 3 12 12")
+        self.build_frame.pack(side="top", fill="both", expand=True)
+        tab_control.add(self.build_frame, text="Build Pack", sticky=N)
 
-        parse_frame = ParseFrame(self, padding="3 3 12 12")
-        parse_frame.pack(side="top", fill="both", expand=True)
-        tab_control.add(parse_frame, text="Parse ROMs Folder", sticky=N)
+        self.parse_frame = ParseFrame(self, padding="3 3 12 12")
+        self.parse_frame.pack(side="top", fill="both", expand=True)
+        tab_control.add(self.parse_frame, text="Parse ROMs Folder", sticky=N)
 
         tab_control.pack(side="top", fill="both", expand=True)
 
@@ -68,6 +68,18 @@ class App(Tk):
         menu_bar = MenuBar(self)
 
         self.config(menu=menu_bar)
+
+    def toggle_action_buttons(self, enable):
+        if enable:
+            self.build_frame.change_state('normal',
+                                          [self.build_frame.build_btn])
+            self.parse_frame.change_state('normal',
+                                          [self.parse_frame.parse_btn])
+        else:
+            self.build_frame.change_state('disabled',
+                                          [self.build_frame.build_btn])
+            self.parse_frame.change_state('disabled',
+                                          [self.parse_frame.parse_btn])
 
 
 # *********************************************************************#
@@ -102,7 +114,14 @@ if __name__ == '__main__':
     parser.add_argument("-s", "--scripts_folder",
                         dest="scripts_folder",
                         default=None,
-                        help="set scripts folder")
+                        help="Provides the folder where the pack scripts"
+                             "are located.")
+
+    parser.add_argument("--save",
+                        dest="save",
+                        default=False,
+                        help="Saves the provided pack script folder to"
+                             "the ini file.")
 
     args = parser.parse_args()
 
@@ -111,14 +130,26 @@ if __name__ == '__main__':
     parse_file = None
     ini_file = get_ini_file()
 
+    # Path pass as a parameter, used instead of the ini file value
     if is_pack_scripts_folder(args.scripts_folder):
         folder = Path(args.scripts_folder)
-        save_ini_file(ini_file, "UI", {"scripts_folder": get_abs_path(folder)})
+        if args.save:
+            save_ini_file(ini_file, "UI",
+                          {"scripts_folder": get_abs_path(folder)})
 
     elif ini_file.exists():
         config = configparser.ConfigParser()
         config.read_file(ini_file.open())
         folder = Path(config["UI"]["scripts_folder"])
+
+    # If the pack script folder was not provided verify current folder and path
+    elif _is_pack_scripts_folder(Path()):
+        folder = Path()
+
+    # Look for the packs script on the parent folder
+    elif _is_pack_scripts_folder(Path() /
+                                 "../EverDrive-Packs-Lists-Database/"):
+        folder = Path(Path() / "../EverDrive-Packs-Lists-Database/")
 
     if folder:
         build_file, parse_file = get_pack_scripts_paths(folder)

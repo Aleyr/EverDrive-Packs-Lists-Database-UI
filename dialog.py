@@ -1,6 +1,5 @@
 from tkinter import *
 from utils import *
-import os
 
 
 class Dialog(Toplevel):
@@ -94,11 +93,15 @@ class Dialog(Toplevel):
 
     def cancel(self, event=None):
         if len(self.scripts_folder.get()) > 0:
-            # put focus back to the parent window
-            self.parent.focus_set()
-            self.destroy()
+            # Enable build and parse buttons
+            self.parent.toggle_action_buttons(True)
         else:
-            self.parent.destroy()
+            # Disable build and parse buttons
+            self.parent.toggle_action_buttons(False)
+
+        self.parent.focus_set()
+        self.destroy()
+        # self.parent.destroy()
 
     #
     # command hooks
