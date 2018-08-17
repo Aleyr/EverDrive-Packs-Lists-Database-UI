@@ -1,0 +1,22 @@
+Version 0.9
+
+- Added ways to point to the pack scripts
+
+Version 0.8
+
+- Separated project from pack scripts
+
+Version 0.5a
+
+- Fixed bug: on command when the there are scpaces on paths
+
+Version 0.5
+
+- First working version
+- File selection works
+- Parameter valiation enabled and working
+- Command button enabled and working
+
+Version 0.1
+
+- Initial commit
