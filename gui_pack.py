@@ -18,7 +18,7 @@ from menubar import *
 from textmessage import *
 from autoresized_notebook import Autoresized_Notebook
 from pathlib import Path
-from dialog import Dialog
+from dialog import ScriptSelectionDialog
 
 
 __author__ = "aleyr"
@@ -93,7 +93,7 @@ def main(folder, build_file, parse_file):
     app = App(folder, build_file, parse_file)
     app.title("EverDrive-Packs-Lists-Database")
     if not app.folder:
-        Dialog(app, "Set Pack Scripts Folder")
+        ScriptSelectionDialog(app, "Set Pack Scripts Folder")
     app.mainloop()
 
 
