@@ -205,10 +205,15 @@ class BuildFrame(ttk.Frame):
                 self.finish()
                 return
             else:
-                # print("line " + str(line) + ", line[:1] " + str(line[:1]))
+                print("line " + str(line) + ", line[:1] " + str(line[:1]))
                 if line[:1] == str.encode("c"):
                     self.parent.progress["mode"] = "determinate"
                     self.parent.progress["value"] = 100
+                    self.parent.text_label.set(line[:-2])
+                    self.parent.display_sucess("Build Pack Finished",
+                                               line[:-2])
+                    self.finish()
+                    return
                 else:
                     self.parent.progress["value"] = float(line[17:26])
                     self.parent.text_label.set(line[:26])
@@ -216,8 +221,5 @@ class BuildFrame(ttk.Frame):
         self.parent.after(40, self.update, q)  # schedule next update
 
     def finish(self):
-        self.parent.text_label.set("Build completed.")
-        self.parent.progress["mode"] = "determinate"
-        self.parent.progress["value"] = 0
         self.process.kill()  # exit subprocess if GUI is closed (zombie!)
         self.enable_components()

@@ -18,7 +18,7 @@ from menubar import *
 from textmessage import *
 from autoresized_notebook import Autoresized_Notebook
 from pathlib import Path
-from dialog import ScriptSelectionDialog
+from dialog import *
 
 
 __author__ = "aleyr"
@@ -81,6 +81,8 @@ class App(Tk):
             self.parse_frame.change_state('disabled',
                                           [self.parse_frame.parse_btn])
 
+    def display_sucess(self, title, message):
+        SuccessDialog(self, title, message)
 
 # *********************************************************************#
 #                                                                      #

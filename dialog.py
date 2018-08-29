@@ -112,7 +112,7 @@ class ScriptSelectionDialog(Dialog):
         else:
             self.scripts_folder.set("")
 
-        textbox_path = Entry(master, width=50,
+        textbox_path = Entry(master, height=3, width=50,
                              textvariable=self.scripts_folder)
         textbox_path.grid(column=2, row=1, sticky=E)
         ttk.Label(master, text="ROMs folder: "
@@ -175,7 +175,8 @@ class SuccessDialog(Dialog):
     # construction hooks
 
     def body(self, master):
-        msg = tk.Text(master, width=90, font=('courier', self._size, 'normal'))
+        msg = tk.Text(master, height=1, width=40,
+                      font=('courier', self._size, 'normal'))
         msg.grid(stick=tk.N, padx=(10, 10), pady=(10, 10))
         msg.insert("1.0", (self._message))
 
