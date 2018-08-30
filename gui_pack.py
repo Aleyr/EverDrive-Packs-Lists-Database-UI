@@ -18,7 +18,7 @@ from menubar import *
 from textmessage import *
 from autoresized_notebook import Autoresized_Notebook
 from pathlib import Path
-from dialog import Dialog
+from dialog import *
 
 
 __author__ = "aleyr"
@@ -81,6 +81,8 @@ class App(Tk):
             self.parse_frame.change_state('disabled',
                                           [self.parse_frame.parse_btn])
 
+    def display_sucess(self, title, message):
+        SuccessDialog(self, title, message)
 
 # *********************************************************************#
 #                                                                      #
@@ -93,7 +95,7 @@ def main(folder, build_file, parse_file):
     app = App(folder, build_file, parse_file)
     app.title("EverDrive-Packs-Lists-Database")
     if not app.folder:
-        Dialog(app, "Set Pack Scripts Folder")
+        ScriptSelectionDialog(app, "Set Pack Scripts Folder")
     app.mainloop()
 
 

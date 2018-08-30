@@ -143,8 +143,9 @@ def create_command_array(build_file=None, parse_file=None,
             cmd.append("hardlink")
         if skip_eisting:
             cmd.append("--skip_existing")
-        if new_line:
-            cmd.append("--new_line")
+
+    if new_line:
+        cmd.append("--new_line")
 
     return cmd
 

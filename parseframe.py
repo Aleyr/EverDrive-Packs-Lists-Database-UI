@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
 from queue import Queue, Empty
@@ -24,6 +25,8 @@ class ParseFrame(ttk.Frame):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
 
         self.parent = parent
+
+        self.value_buffer = float(0)
 
         self.grid(column=0, row=0, sticky=(N, W, E, S))
         self.columnconfigure(0, weight=1)
@@ -96,7 +99,8 @@ class ParseFrame(ttk.Frame):
             cmd = create_command(parse_file=self.parent.parse_file,
                                  folder=self.path_dir_roms.get(),
                                  output=self.path_pack_file.get())
-            TextMessage().popup("Python command", cmd)
+            # TextMessage().popup("Python command", cmd)
+            CommandDialog(self, "Python command", cmd)
 
     def validate_info(self):
         out = False
@@ -148,18 +152,21 @@ class ParseFrame(ttk.Frame):
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 # print("Work is done!!!!")
+                tmp_str = "Parsed " + str(self.value_buffer)[:-2] + " files."
+                self.parent.text_label.set("Parse completed. " + tmp_str)
+                self.parent.progress["mode"] = "determinate"
+                self.parent.progress["value"] = 100
+                self.parent.display_sucess("Parse Pack Finished", tmp_str)
                 self.finish()
                 return
             else:
-                # print("line " + str(line))
-                self.parent.progress["value"] = float(line[17:26])
+                print("line " + str(line))
+                self.value_buffer = float(line[17:26])
+                self.parent.progress["value"] = self.value_buffer
                 self.parent.text_label.set(line[:26])
                 break  # display no more than one line per 40 milliseconds
         self.parent.after(40, self.update, q)  # schedule next update
 
     def finish(self):
-        self.parent.text_label.set("Parse completed.")
-        self.parent.progress["mode"] = "determinate"
-        self.parent.progress["value"] = 0
         self.process.kill()  # exit subprocess if GUI is closed (zombie!)
         self.enable_components()

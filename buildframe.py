@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
 from queue import Queue, Empty
@@ -143,7 +144,8 @@ class BuildFrame(ttk.Frame):
                                  missing=self.path_missing_file.get(),
                                  file_strategy=self.file_strategy.get(),
                                  skip_eisting=self.overwrite.get())
-            TextMessage().popup("Python command", cmd)
+            # TextMessage().popup("Python command", cmd)
+            CommandDialog(self, "Python command", cmd)
 
     def validate_info(self):
         out = False
@@ -205,10 +207,15 @@ class BuildFrame(ttk.Frame):
                 self.finish()
                 return
             else:
-                # print("line " + str(line) + ", line[:1] " + str(line[:1]))
+                print("line " + str(line) + ", line[:1] " + str(line[:1]))
                 if line[:1] == str.encode("c"):
                     self.parent.progress["mode"] = "determinate"
                     self.parent.progress["value"] = 100
+                    self.parent.text_label.set(line[:-2])
+                    self.parent.display_sucess("Build Pack Finished",
+                                               line[:-2])
+                    self.finish()
+                    return
                 else:
                     self.parent.progress["value"] = float(line[17:26])
                     self.parent.text_label.set(line[:26])
@@ -216,8 +223,5 @@ class BuildFrame(ttk.Frame):
         self.parent.after(40, self.update, q)  # schedule next update
 
     def finish(self):
-        self.parent.text_label.set("Build completed.")
-        self.parent.progress["mode"] = "determinate"
-        self.parent.progress["value"] = 0
         self.process.kill()  # exit subprocess if GUI is closed (zombie!)
         self.enable_components()

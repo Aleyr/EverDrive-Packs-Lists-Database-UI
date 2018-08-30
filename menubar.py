@@ -8,7 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 import tkinter as tk
 from tkinter import *
 from textmessage import TextMessage
-from dialog import Dialog
+from dialog import *
 
 __author__ = "aleyr"
 __date__ = "2018/08/09"
@@ -26,7 +26,8 @@ class MenuBar(tk.Menu):
 
         file_menu.add_command(label="Pack Scripts Path",
                               command=lambda:
-                              Dialog(self.parent, "Set Pack Scripts Folder"))
+                              ScriptSelectionDialog(self.parent,
+                                                    "Set Pack Scripts Folder"))
         # TextMessage(parent).set_script_paths())
         file_menu.add_separator()
         file_menu.add_command(label="Exit",
@@ -34,5 +35,5 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="File", menu=file_menu)
 
         help_menu.add_command(label="About",
-                              command=lambda: TextMessage().about())
+                              command=lambda: AboutDialog(self.parent))
         self.add_cascade(label="Help", menu=help_menu)
