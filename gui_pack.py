@@ -23,7 +23,7 @@ from dialog import *
 
 __author__ = "aleyr"
 __date__ = "2018/08/03"
-__version__ = "$Revision: 0.9"
+__version__ = "$Revision: 0.9.1"
 
 
 # *********************************************************************#
