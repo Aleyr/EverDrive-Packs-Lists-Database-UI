@@ -15,7 +15,7 @@ from pathlib import Path
 
 __author__ = "aleyr"
 __date__ = "2018/08/09"
-__version__ = "$Revision: 0.9"
+____version__ = "$Revision: 0.9.1"
 
 
 BUILD_SCRIPT_NAME = "build_pack.py"

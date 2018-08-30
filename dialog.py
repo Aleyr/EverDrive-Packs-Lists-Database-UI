@@ -113,7 +113,7 @@ class ScriptSelectionDialog(Dialog):
         else:
             self.scripts_folder.set("")
 
-        textbox_path = Entry(master, height=3, width=50,
+        textbox_path = Entry(master, width=50,
                              textvariable=self.scripts_folder)
         textbox_path.grid(column=2, row=1, sticky=E)
         ttk.Label(master, text="ROMs folder: "
