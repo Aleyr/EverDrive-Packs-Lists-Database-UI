@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
 from queue import Queue, Empty
@@ -98,7 +99,8 @@ class ParseFrame(ttk.Frame):
             cmd = create_command(parse_file=self.parent.parse_file,
                                  folder=self.path_dir_roms.get(),
                                  output=self.path_pack_file.get())
-            TextMessage().popup("Python command", cmd)
+            # TextMessage().popup("Python command", cmd)
+            CommandDialog(self, "Python command", cmd)
 
     def validate_info(self):
         out = False

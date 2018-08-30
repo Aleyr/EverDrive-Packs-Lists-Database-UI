@@ -1,3 +1,9 @@
+Version 0.9.1
+
+- Modified build and parse success processs. It will now display a dialog announcing the end of the process and keep the last build or parse information on the status bar.
+- Modified the command popup to be a dialog instead of a new window.
+- Modified the About popup to be a dialog insted of a new window.
+
 Version 0.9
 
 - Added ways to point to the pack scripts

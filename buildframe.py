@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
 from queue import Queue, Empty
@@ -143,7 +144,8 @@ class BuildFrame(ttk.Frame):
                                  missing=self.path_missing_file.get(),
                                  file_strategy=self.file_strategy.get(),
                                  skip_eisting=self.overwrite.get())
-            TextMessage().popup("Python command", cmd)
+            # TextMessage().popup("Python command", cmd)
+            CommandDialog(self, "Python command", cmd)
 
     def validate_info(self):
         out = False

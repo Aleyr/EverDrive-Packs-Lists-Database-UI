@@ -35,5 +35,5 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="File", menu=file_menu)
 
         help_menu.add_command(label="About",
-                              command=lambda: TextMessage().about())
+                              command=lambda: AboutDialog(self.parent))
         self.add_cascade(label="Help", menu=help_menu)
