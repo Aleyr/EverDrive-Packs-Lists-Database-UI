@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+import platform
 from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
@@ -24,6 +25,10 @@ ____version__ = "$Revision: 0.9.1"
 class BuildFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
+
+        self.new_line_size = 1
+        if platform.system() == "Windows":
+            self.new_line_size = 2
 
         self.parent = parent
 
@@ -133,7 +138,7 @@ class BuildFrame(ttk.Frame):
         self.path_dir_pack.set('')
         self.path_missing_file.set('')
         self.file_strategy.set(0)
-        self.overwrite.set(1)
+        self.overwrite.set(0)
 
     def click_command(self):
         if self.validate_info():
@@ -195,6 +200,8 @@ class BuildFrame(ttk.Frame):
             with self.process.stdout as pipe:
                 for line in iter(pipe.readline, b''):
                     q.put(line)
+        # except Error:
+        #     print("There was an error:\n")
         finally:
             q.put(None)
 
@@ -204,16 +211,21 @@ class BuildFrame(ttk.Frame):
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 # print("Work is done!!!!")
+                # tmp_str = line + "))"  # "Parsed " + str(self.value_buffer)[:-2] + " files."
+                # self.parent.text_label.set("Build Pack completed. " + tmp_str)
+                # self.parent.progress["mode"] = "determinate"
+                # self.parent.progress["value"] = 100
+                # self.parent.display_sucess("Build Pack Finished", tmp_str)
                 self.finish()
                 return
             else:
-                print("line " + str(line) + ", line[:1] " + str(line[:1]))
+                # print("line " + str(line) + ", line[:1] " + str(line[:1]))
                 if line[:1] == str.encode("c"):
                     self.parent.progress["mode"] = "determinate"
                     self.parent.progress["value"] = 100
-                    self.parent.text_label.set(line[:-2])
+                    self.parent.text_label.set(line[:-self.new_line_size])
                     self.parent.display_sucess("Build Pack Finished",
-                                               line[:-2])
+                                               line[:-self.new_line_size])
                     self.finish()
                     return
                 else:

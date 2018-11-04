@@ -8,6 +8,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 from tkinter import *
 from tkinter import ttk
 import os
+import platform
 from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
@@ -23,6 +24,10 @@ ____version__ = "$Revision: 0.9.1"
 class ParseFrame(ttk.Frame):
     def __init__(self, parent, *args, **kwargs):
         ttk.Frame.__init__(self, parent, *args, **kwargs)
+
+        self.new_line_size = 1
+        if platform.system() == "Windows":
+            self.new_line_size = 2
 
         self.parent = parent
 
@@ -152,7 +157,7 @@ class ParseFrame(ttk.Frame):
         for line in iter_except(q.get_nowait, Empty):
             if line is None:
                 # print("Work is done!!!!")
-                tmp_str = "Parsed " + str(self.value_buffer)[:-2] + " files."
+                tmp_str = "Parsed " + str(self.value_buffer)[:-self.new_line_size] + " files."
                 self.parent.text_label.set("Parse completed. " + tmp_str)
                 self.parent.progress["mode"] = "determinate"
                 self.parent.progress["value"] = 100
@@ -160,7 +165,7 @@ class ParseFrame(ttk.Frame):
                 self.finish()
                 return
             else:
-                print("line " + str(line))
+                # print("line " + str(line))
                 self.value_buffer = float(line[17:26])
                 self.parent.progress["value"] = self.value_buffer
                 self.parent.text_label.set(line[:26])
