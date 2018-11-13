@@ -1,8 +1,16 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 from abc import ABC, abstractmethod
 import tkinter as tk
 from tkinter import *
 from platform import system
 from utils import *
+
+
+__author__ = "Aleyr"
+__date__ = "2018/11/10"
+____version__ = "$Revision: 0.9.2"
 
 
 class Dialog(ABC, Toplevel):
@@ -127,7 +135,9 @@ class ScriptSelectionDialog(Dialog):
         self.bind("<Alt_L><b>",
                   lambda e: select_folder(self.scripts_folder,
                                           "Select Pack Scripts folder"))
+        self.parent.attributes('-topmost', True)
         textbox_path.focus_set()
+        self.parent.attributes('-topmost', False)
 
     #
     # standard button semantics

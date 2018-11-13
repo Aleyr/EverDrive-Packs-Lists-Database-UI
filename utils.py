@@ -11,16 +11,24 @@ import os
 from tkinter import *
 from tkinter import filedialog as fd
 from pathlib import Path
+from platform import system
 
 
-__author__ = "aleyr"
-__date__ = "2018/08/09"
-____version__ = "$Revision: 0.9.1"
+__author__ = "Aleyr"
+__date__ = "2018/11/10"
+____version__ = "$Revision: 0.9.2"
 
 
 BUILD_SCRIPT_NAME = "build_pack.py"
 PARSE_SCRIPT_NAME = "parse_pack.py"
 
+APP_NAME = "EverDrive-Packs-Lists-Database-UI"
+INI_FILE_NAME = APP_NAME + ".cfg"
+INI_DIR_MAC = "~/Library/Application Support/" + APP_NAME + "/"
+INI_FILE_MAC = INI_DIR_MAC + APP_NAME + ".cfg"
+INI_DIR_WINDOWS = "%LOCALAPPDATA%\\" + APP_NAME + "\\"
+INI_FILE_WINDOWS = INI_DIR_WINDOWS + APP_NAME + ".cfg"
+INI_FILE_UNIX = "~/." + APP_NAME + "/" + APP_NAME + ".cfg"
 
 def select_folder(directory, title):
     path = fd.askdirectory(initialdir=os.getcwd(), title=title)
@@ -62,14 +70,28 @@ def create_command(build_file=None, parse_file=None,
 
 
 def get_ini_file():
-    tmp = os.path.basename(__file__)[:-8] + "gui_pack.ini"
-    out = Path() / tmp
+    tmp = INI_FILE_UNIX
+    if "Darwin" in system():
+        tmp = INI_FILE_MAC
+    elif "Windows" in system():
+        tmp = INI_FILE_WINDOWS
+
+    print("tmp " + tmp)
+    out = Path(tmp)
+    print("out " + str(out))
     return out
 
 
 def save_ini_file(ini_file, section, values):
     config = configparser.ConfigParser()
     config[section] = values
+    # folder check
+    ini_dir = Path(str(INI_DIR_MAC))
+    # print ("save_ini_file ini_dir " + str(ini_dir))
+    # print ("save_ini_file ini_dir.exists() " + str(ini_dir.exists()))
+    if not ini_dir.exists():
+        ini_dir.mkdir()
+        print("ini)dir created!")
     with ini_file.open(mode="w") as configfile:
         config.write(configfile)
 
