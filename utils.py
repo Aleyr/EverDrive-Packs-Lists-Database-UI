@@ -16,7 +16,8 @@ from platform import system
 
 __author__ = "Aleyr"
 __date__ = "2018/11/10"
-__version__ = "$Revision: 0.9.2"
+VERSION = "0.9.2"
+__version__ = "$Revision: " + VERSION
 
 
 BUILD_SCRIPT_NAME = "build_pack.py"

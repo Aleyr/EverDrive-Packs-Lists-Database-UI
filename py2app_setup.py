@@ -7,17 +7,14 @@
  Usage (Mac OS X):
      python setup.py py2app
 
- Usage (Windows):
+ Usage (Windows) does not work on Python 3.5+, but I leave it here:
      python setup.py py2exe
 """
 
-import ez_setup
-ez_setup.use_setuptools()
-
+# import ez_setup
 import sys
-from setuptools import setup
-
 import utils
+from setuptools import setup
 
 NAME = utils.APP_NAME
 MAIN_SCRIPT = 'SmokeMonster-packs-UI.py'
@@ -40,6 +37,7 @@ if sys.platform == 'darwin':
         options=dict(py2app=OPTIONS),
     )
 elif sys.platform == 'win32':
+	# ez_setup.use_setuptools()
     extra_options = dict(
         setup_requires=['py2exe'],
         app=APP,
