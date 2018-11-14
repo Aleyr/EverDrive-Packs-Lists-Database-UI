@@ -10,9 +10,9 @@ from tkinter import *
 from textmessage import TextMessage
 from dialog import *
 
-__author__ = "aleyr"
-__date__ = "2018/08/09"
-____version__ = "$Revision: 0.9.1"
+__author__ = "Aleyr"
+__date__ = "2018/11/13"
+__version__ = "$Revision: 0.9.2"
 
 
 class MenuBar(tk.Menu):

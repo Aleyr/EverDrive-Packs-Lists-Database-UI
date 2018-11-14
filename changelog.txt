@@ -1,3 +1,9 @@
+Version 0.9.2
+
+- Corrected an issue on MacOS that displayed the script location dialog under the main window, hiding it.
+- Added files to create MacOS app using py2app
+- Added files to create Windows EXE using py2exe
+
 Version 0.9.1
 
 - Modified build and parse success processs. It will now display a dialog announcing the end of the process and keep the last build or parse information on the status bar.

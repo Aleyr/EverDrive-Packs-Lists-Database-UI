@@ -21,9 +21,9 @@ from pathlib import Path
 from dialog import *
 
 
-__author__ = "aleyr"
-__date__ = "2018/08/03"
-__version__ = "$Revision: 0.9.1"
+__author__ = "Aleyr"
+__date__ = "2018/11/13"
+__version__ = "$Revision: 0.9.2"
 
 
 # *********************************************************************#

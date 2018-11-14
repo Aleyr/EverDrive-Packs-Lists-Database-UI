@@ -10,7 +10,7 @@ from utils import *
 
 __author__ = "Aleyr"
 __date__ = "2018/11/10"
-____version__ = "$Revision: 0.9.2"
+__version__ = "$Revision: 0.9.2"
 
 
 class Dialog(ABC, Toplevel):

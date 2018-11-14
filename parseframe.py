@@ -16,9 +16,9 @@ from queue import Queue, Empty
 from textmessage import *
 from utils import *
 
-__author__ = "aleyr"
-__date__ = "2018/08/09"
-____version__ = "$Revision: 0.9.1"
+__author__ = "Aleyr"
+__date__ = "2018/11/13"
+__version__ = "$Revision: 0.9.2"
 
 
 class ParseFrame(ttk.Frame):
