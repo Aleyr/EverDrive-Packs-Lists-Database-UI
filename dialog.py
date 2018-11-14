@@ -124,9 +124,9 @@ class ScriptSelectionDialog(Dialog):
         textbox_path = Entry(master, width=50,
                              textvariable=self.scripts_folder)
         textbox_path.grid(column=2, row=1, sticky=E)
-        ttk.Label(master, text="ROMs folder: "
+        tk.Label(master, text="ROMs folder: "
                   ).grid(column=1, row=1, sticky=W)
-        browse_btn = ttk.Button(master, text="Browse", underline=0,
+        browse_btn = tk.Button(master, text="Browse", underline=0,
                                 command=lambda:
                                 select_folder(self.scripts_folder,
                                               "Select Pack Scripts folder"))
