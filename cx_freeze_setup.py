@@ -3,7 +3,7 @@ import utils
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
-build_exe_options = {"packages": ["os"], "excludes": ["py2app"]}
+build_exe_options = {"packages": ["os"], "excludes": ["py2app"], "includes": ["tkinter"]}
 
 # GUI applications require a different base on Windows (the default is for a
 # console application).
