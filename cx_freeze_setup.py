@@ -33,4 +33,6 @@ setup(  name = utils.APP_NAME,
         version = utils.VERSION,
         description = "SmokeMonster everdrive pack list scripts UI",
         options = {"build_exe": build_exe_options},
-        executables = [Executable("SmokeMonster-packs-UI.py", base=base, icon="logoapp.ico")])
+        executables = [Executable("SmokeMonster-packs-UI.py", base=base, icon="logoapp.ico"),
+                       Executable("build_pack.py", icon="logoapp.ico"),
+                       Executable("parse_pack.py", icon="logoapp.ico")])

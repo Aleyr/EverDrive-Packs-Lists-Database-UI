@@ -7,6 +7,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 
 import configparser
 import os
+import sys
 
 from tkinter import *
 from tkinter import filedialog as fd
@@ -19,6 +20,8 @@ __date__ = "2018/11/10"
 VERSION = "0.9.2"
 __version__ = "$Revision: " + VERSION
 
+BUILD_EXE_NAME = "build_pack.exe"
+PARSE_EXE_NAME = "parse_pack.exe"
 
 BUILD_SCRIPT_NAME = "build_pack.py"
 PARSE_SCRIPT_NAME = "parse_pack.py"
@@ -124,7 +127,13 @@ def _is_pack_scripts_folder(folder):
         build_file = folder / BUILD_SCRIPT_NAME
         parse_file = folder / PARSE_SCRIPT_NAME
 
+        build_exe = folder / BUILD_EXE_NAME
+        parse_exe = folder / PARSE_EXE_NAME
+
         if build_file.exists() and parse_file.exists():
+            out = True
+
+        if build_exe.exists() and parse_exe.exists():
             out = True
 
     return out
@@ -133,6 +142,9 @@ def _is_pack_scripts_folder(folder):
 def get_pack_scripts_paths(folder):
     build_file = folder / BUILD_SCRIPT_NAME
     parse_file = folder / PARSE_SCRIPT_NAME
+    if "Windows" in system() and str(sys.executable).lower().find("python") == -1:
+        build_file = Path(".") / BUILD_EXE_NAME
+        parse_file = Path(".")   / PARSE_EXE_NAME
 
     return (build_file, parse_file)
 
@@ -153,7 +165,7 @@ def create_command_array(build_file=None, parse_file=None,
     python_path = Path(sys.executable)
     cmd = [get_abs_path(python_path, add_quotes)]
     if "Windows" in system() and cmd[0].lower().find("python") == -1:
-        cmd = ["python"]
+        cmd = []
     if parse_file:
         cmd.append(get_abs_path(parse_file, add_quotes))
         cmd.append("-f")
