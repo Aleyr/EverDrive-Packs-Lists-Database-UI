@@ -27,9 +27,10 @@ APP_NAME = "EverDrive-Packs-Lists-Database-UI"
 INI_FILE_NAME = APP_NAME + ".cfg"
 INI_DIR_MAC = "~/Library/Application Support/" + APP_NAME + "/"
 INI_FILE_MAC = INI_DIR_MAC + APP_NAME + ".cfg"
-INI_DIR_WINDOWS = "%LOCALAPPDATA%\\" + APP_NAME + "\\"
+INI_DIR_WINDOWS = os.environ["LOCALAPPDATA"] + "\\" + APP_NAME + "\\"
 INI_FILE_WINDOWS = INI_DIR_WINDOWS + APP_NAME + ".cfg"
-INI_FILE_UNIX = "~/." + APP_NAME + "/" + APP_NAME + ".cfg"
+INI_DIR_UNIX = "~/"
+INI_FILE_UNIX = INI_DIR_UNIX + APP_NAME + "/" + APP_NAME + ".cfg"
 
 def select_folder(directory, title):
     path = fd.askdirectory(initialdir=os.getcwd(), title=title)
@@ -77,24 +78,34 @@ def get_ini_file():
     elif "Windows" in system():
         tmp = INI_FILE_WINDOWS
 
-    print("tmp " + tmp)
+    # print("tmp " + tmp)
     out = Path(tmp)
-    print("out " + str(out))
+    # print("out " + str(out))
     return out
 
 
-def save_ini_file(ini_file, section, values):
+def save_ini_file(ini_file, section, values, root=None):
     config = configparser.ConfigParser()
     config[section] = values
     # folder check
-    ini_dir = Path(str(INI_DIR_MAC))
+    ini_dir = INI_DIR_UNIX
+    if "Darwin" in system():
+        ini_dir = INI_DIR_MAC
+    elif "Windows" in system():
+        ini_dir = INI_DIR_WINDOWS
+    ini_dir = Path(ini_dir)
     # print ("save_ini_file ini_dir " + str(ini_dir))
     # print ("save_ini_file ini_dir.exists() " + str(ini_dir.exists()))
-    if not ini_dir.exists():
-        ini_dir.mkdir()
-        print("ini)dir created!")
-    with ini_file.open(mode="w") as configfile:
-        config.write(configfile)
+    try:
+        if not ini_dir.exists():
+            # print("Will create ini directory")
+            ini_dir.mkdir()
+            # print("ini dir created!")
+        with ini_file.open(mode="w") as configfile:
+            config.write(configfile)
+    except:
+        # TODO create dialog with error
+        print("Error when saving file")
 
 
 def is_pack_scripts_folder(scripts_folder):
