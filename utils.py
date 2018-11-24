@@ -152,6 +152,8 @@ def create_command_array(build_file=None, parse_file=None,
                          add_quotes=False):
     python_path = Path(sys.executable)
     cmd = [get_abs_path(python_path, add_quotes)]
+    if "Windows" in system() and cmd[0].lower().find("python") == -1:
+        cmd = ["python"]
     if parse_file:
         cmd.append(get_abs_path(parse_file, add_quotes))
         cmd.append("-f")
