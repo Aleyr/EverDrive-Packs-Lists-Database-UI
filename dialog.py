@@ -37,6 +37,7 @@ class Dialog(ABC, Toplevel):
 
         self.geometry("+%d+%d" % (parent.winfo_rootx() + 50,
                                   parent.winfo_rooty() + 50))
+        self.iconbitmap(APP_LOGO_ICO)
 
         self.initial_focus.focus_set()
 

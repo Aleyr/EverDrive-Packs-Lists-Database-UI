@@ -69,6 +69,8 @@ class App(Tk):
 
         self.config(menu=menu_bar)
 
+        self.iconbitmap(APP_LOGO_ICO)
+
     def toggle_action_buttons(self, enable):
         if enable:
             self.build_frame.change_state('normal',

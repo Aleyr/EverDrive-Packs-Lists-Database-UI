@@ -26,6 +26,8 @@ PARSE_EXE_NAME = "parse_pack.exe"
 BUILD_SCRIPT_NAME = "build_pack.py"
 PARSE_SCRIPT_NAME = "parse_pack.py"
 
+APP_LOGO_ICO = "./logoapp.ico"
+
 APP_NAME = "EverDrive-Packs-Lists-Database-UI"
 INI_FILE_NAME = APP_NAME + ".cfg"
 INI_DIR_MAC = "~/Library/Application Support/" + APP_NAME + "/"
