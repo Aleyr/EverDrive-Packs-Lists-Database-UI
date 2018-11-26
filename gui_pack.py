@@ -69,6 +69,8 @@ class App(Tk):
 
         self.config(menu=menu_bar)
 
+        self.iconbitmap(APP_LOGO_ICO)
+
     def toggle_action_buttons(self, enable):
         if enable:
             self.build_frame.change_state('normal',
@@ -115,7 +117,7 @@ if __name__ == '__main__':
 
     parser.add_argument("-s", "--scripts_folder",
                         dest="scripts_folder",
-                        default=None,
+                        default=None,  # ".",
                         help="Provides the folder where the pack scripts"
                              "are located.")
 
@@ -130,7 +132,7 @@ if __name__ == '__main__':
     folder = None
     build_file = None
     parse_file = None
-    ini_file = get_ini_file()
+    ini_file = args.scripts_folder or get_ini_file()
 
     # Path pass as a parameter, used instead of the ini file value
     if is_pack_scripts_folder(args.scripts_folder):

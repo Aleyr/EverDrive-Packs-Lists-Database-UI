@@ -7,6 +7,7 @@ Graphical User Iterface for build_pack and parse_pack scripts.
 
 import configparser
 import os
+import sys
 
 from tkinter import *
 from tkinter import filedialog as fd
@@ -19,17 +20,22 @@ __date__ = "2018/11/10"
 VERSION = "0.9.2"
 __version__ = "$Revision: " + VERSION
 
+BUILD_EXE_NAME = "build_pack.exe"
+PARSE_EXE_NAME = "parse_pack.exe"
 
 BUILD_SCRIPT_NAME = "build_pack.py"
 PARSE_SCRIPT_NAME = "parse_pack.py"
+
+APP_LOGO_ICO = "./logoapp.ico"
 
 APP_NAME = "EverDrive-Packs-Lists-Database-UI"
 INI_FILE_NAME = APP_NAME + ".cfg"
 INI_DIR_MAC = "~/Library/Application Support/" + APP_NAME + "/"
 INI_FILE_MAC = INI_DIR_MAC + APP_NAME + ".cfg"
-INI_DIR_WINDOWS = "%LOCALAPPDATA%\\" + APP_NAME + "\\"
+INI_DIR_WINDOWS = os.environ["LOCALAPPDATA"] + "\\" + APP_NAME + "\\"
 INI_FILE_WINDOWS = INI_DIR_WINDOWS + APP_NAME + ".cfg"
-INI_FILE_UNIX = "~/." + APP_NAME + "/" + APP_NAME + ".cfg"
+INI_DIR_UNIX = "~/"
+INI_FILE_UNIX = INI_DIR_UNIX + APP_NAME + "/" + APP_NAME + ".cfg"
 
 def select_folder(directory, title):
     path = fd.askdirectory(initialdir=os.getcwd(), title=title)
@@ -77,24 +83,34 @@ def get_ini_file():
     elif "Windows" in system():
         tmp = INI_FILE_WINDOWS
 
-    print("tmp " + tmp)
+    # print("tmp " + tmp)
     out = Path(tmp)
-    print("out " + str(out))
+    # print("out " + str(out))
     return out
 
 
-def save_ini_file(ini_file, section, values):
+def save_ini_file(ini_file, section, values, root=None):
     config = configparser.ConfigParser()
     config[section] = values
     # folder check
-    ini_dir = Path(str(INI_DIR_MAC))
+    ini_dir = INI_DIR_UNIX
+    if "Darwin" in system():
+        ini_dir = INI_DIR_MAC
+    elif "Windows" in system():
+        ini_dir = INI_DIR_WINDOWS
+    ini_dir = Path(ini_dir)
     # print ("save_ini_file ini_dir " + str(ini_dir))
     # print ("save_ini_file ini_dir.exists() " + str(ini_dir.exists()))
-    if not ini_dir.exists():
-        ini_dir.mkdir()
-        print("ini)dir created!")
-    with ini_file.open(mode="w") as configfile:
-        config.write(configfile)
+    try:
+        if not ini_dir.exists():
+            # print("Will create ini directory")
+            ini_dir.mkdir()
+            # print("ini dir created!")
+        with ini_file.open(mode="w") as configfile:
+            config.write(configfile)
+    except:
+        # TODO create dialog with error
+        print("Error when saving file")
 
 
 def is_pack_scripts_folder(scripts_folder):
@@ -113,7 +129,13 @@ def _is_pack_scripts_folder(folder):
         build_file = folder / BUILD_SCRIPT_NAME
         parse_file = folder / PARSE_SCRIPT_NAME
 
+        build_exe = folder / BUILD_EXE_NAME
+        parse_exe = folder / PARSE_EXE_NAME
+
         if build_file.exists() and parse_file.exists():
+            out = True
+
+        if build_exe.exists() and parse_exe.exists():
             out = True
 
     return out
@@ -122,6 +144,9 @@ def _is_pack_scripts_folder(folder):
 def get_pack_scripts_paths(folder):
     build_file = folder / BUILD_SCRIPT_NAME
     parse_file = folder / PARSE_SCRIPT_NAME
+    if "Windows" in system() and str(sys.executable).lower().find("python") == -1:
+        build_file = Path(".") / BUILD_EXE_NAME
+        parse_file = Path(".")   / PARSE_EXE_NAME
 
     return (build_file, parse_file)
 
@@ -141,6 +166,8 @@ def create_command_array(build_file=None, parse_file=None,
                          add_quotes=False):
     python_path = Path(sys.executable)
     cmd = [get_abs_path(python_path, add_quotes)]
+    if "Windows" in system() and cmd[0].lower().find("python") == -1:
+        cmd = []
     if parse_file:
         cmd.append(get_abs_path(parse_file, add_quotes))
         cmd.append("-f")

@@ -167,6 +167,8 @@ class ParseFrame(ttk.Frame):
             else:
                 # print("line " + str(line))
                 self.value_buffer = float(line[17:26])
+                if self.value_buffer > 100:
+                    self.value_buffer = self.value_buffer % 100
                 self.parent.progress["value"] = self.value_buffer
                 self.parent.text_label.set(line[:26])
                 break  # display no more than one line per 40 milliseconds

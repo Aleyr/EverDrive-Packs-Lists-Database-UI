@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter import ttk
 import os
 import platform
+import sys
 from dialog import CommandDialog
 from subprocess import Popen, PIPE
 from threading import Thread
@@ -229,7 +230,10 @@ class BuildFrame(ttk.Frame):
                     self.finish()
                     return
                 else:
-                    self.parent.progress["value"] = float(line[17:26])
+                    self.value_buffer = float(line[17:26])
+                    if self.value_buffer > 100:
+                        self.value_buffer = self.value_buffer % 100
+                    self.parent.progress["value"] = self.value_buffer
                     self.parent.text_label.set(line[:26])
                 break  # display no more than one line per 40 milliseconds
         self.parent.after(40, self.update, q)  # schedule next update

@@ -37,6 +37,7 @@ class Dialog(ABC, Toplevel):
 
         self.geometry("+%d+%d" % (parent.winfo_rootx() + 50,
                                   parent.winfo_rooty() + 50))
+        self.iconbitmap(APP_LOGO_ICO)
 
         self.initial_focus.focus_set()
 
@@ -173,7 +174,8 @@ class ScriptSelectionDialog(Dialog):
         self.parent.parse_file = parse_file
 
         save_ini_file(get_ini_file(), "UI",
-                      {"scripts_folder": get_abs_path(folder)})
+                      {"scripts_folder": get_abs_path(folder)},
+                      self.parent)
 
 
 class SuccessDialog(Dialog):
