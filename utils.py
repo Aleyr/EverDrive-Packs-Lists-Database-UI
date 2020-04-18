@@ -32,8 +32,9 @@ APP_NAME = "EverDrive-Packs-Lists-Database-UI"
 INI_FILE_NAME = APP_NAME + ".cfg"
 INI_DIR_MAC = "~/Library/Application Support/" + APP_NAME + "/"
 INI_FILE_MAC = INI_DIR_MAC + APP_NAME + ".cfg"
-INI_DIR_WINDOWS = os.environ["LOCALAPPDATA"] + "\\" + APP_NAME + "\\"
-INI_FILE_WINDOWS = INI_DIR_WINDOWS + APP_NAME + ".cfg"
+if "LOCALAPPDATA" in os.environ:
+    INI_DIR_WINDOWS = os.environ["LOCALAPPDATA"] + "\\" + APP_NAME + "\\"
+    INI_FILE_WINDOWS = INI_DIR_WINDOWS + APP_NAME + ".cfg"
 INI_DIR_UNIX = "~/"
 INI_FILE_UNIX = INI_DIR_UNIX + APP_NAME + "/" + APP_NAME + ".cfg"
 
