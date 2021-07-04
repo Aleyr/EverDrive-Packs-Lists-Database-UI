@@ -16,7 +16,7 @@ some basic validation, then you have the option of obtaining the command to
 copy and pasted on a console to run it from there, or execute the command from
 within the UI itself.
 
-The interface consistf 2 tabs, one for build_pack.py (default tab) and the other for 
+The interface consists of 2 tabs, one for build_pack.py (default tab) and the other for 
 parse_pack.py.
 
 **Build tab**
